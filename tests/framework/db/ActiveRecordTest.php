@@ -211,6 +211,10 @@ abstract class ActiveRecordTest extends DatabaseTestCase
             $this->markTestSkipped('This test only for databases that make case insensitive search by key like MySQL or postgres with citext');
         }
         
+        $products = Product::find()->indexBy('sku')->all();
+        $this->assertCount(1, $products['ARTi01']->productAttributes);
+        $this->assertCount(0, $products['ARTI01']->productAttributes);
+        
         $products = Product::find()->indexBy('sku')->with('productAttributes')->all();
         $this->assertCount(1, $products['ARTi01']->productAttributes);
         $this->assertCount(0, $products['ARTI01']->productAttributes);
