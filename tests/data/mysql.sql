@@ -408,16 +408,14 @@ CREATE TABLE `T_upsert_1` (
 CREATE TABLE `product` (
        sku varchar(45) NOT NULL PRIMARY KEY,
        title varchar(128) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8mb4_bin;
 
 CREATE TABLE `product_attribute` (
      id INTEGER NOT NULL PRIMARY KEY,
      product_sku varchar(45),
      value varchar(128)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8mb4_bin;
 
 INSERT INTO `product` (sku, title) VALUES ('ARTi01', 'Yii1');
-INSERT INTO `product` (sku, title) VALUES ('ARTI02', 'Yii2');
-INSERT INTO `product_attribute` (id, product_sku, value) VALUES (1, 'ARTI01', 'UPPERCASE');
-INSERT INTO `product_attribute` (id, product_sku, value) VALUES (2, 'ARTI01', 'UPPERCASE2');
-INSERT INTO `product_attribute` (id, product_sku, value) VALUES (3, 'ARTi01', 'EXACT');
+INSERT INTO `product` (sku, title) VALUES ('ARTI01', 'Yii2');
+INSERT INTO `product_attribute` (id, product_sku, value) VALUES (1, 'ARTi01', 'UPPERCASE');
