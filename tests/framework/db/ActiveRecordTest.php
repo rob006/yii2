@@ -212,8 +212,8 @@ abstract class ActiveRecordTest extends DatabaseTestCase
         }
         
         $products = Product::find()->indexBy('sku')->with('productAttributes')->all();
-        $this->assertCount(1, $product['ARTi01']->productAttributes);
-        $this->assertCount(0, $product['ARTI01']->productAttributes);
+        $this->assertCount(1, $products['ARTi01']->productAttributes);
+        $this->assertCount(0, $products['ARTI01']->productAttributes);
     }
 
     public function testFindEagerViaTable()
