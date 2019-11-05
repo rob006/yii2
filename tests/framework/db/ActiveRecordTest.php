@@ -210,29 +210,10 @@ abstract class ActiveRecordTest extends DatabaseTestCase
         if (!in_array($this->driverName, ['mysql'])) {
             $this->markTestSkipped('This test only for databases that make case insensitive search by key like MySQL or postgres with citext');
         }
-
-        $productAttributes = ProductAttribute::find()->where(['product_sku' => 'ARTi01'])->all();
-        $this->assertCount(3, $productAttributes); // there are here ARTi01 and ARTI01 records
-
-        // explicitly change to caseSensitive collation utf8_bin
-        $this->getConnection()->createCommand("ALTER TABLE " . Product::tableName() . " CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin")
-            ->execute();
-        $this->getConnection()->createCommand("ALTER TABLE " . ProductAttribute::tableName() . " CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin")
-            ->execute();
-
-        $product = Product::find()->where(['sku' => 'ARTi01'])->with('productAttributes')->one(); // join for ARTi01
-        $this->assertNotNull($product);
-        $this->assertNotCount(3, $product->productAttributes); // joined one record of 3
-
-        // revert to caseInsensitive collation utf8_general_ci
-        $this->getConnection()->createCommand("ALTER TABLE " . Product::tableName() . " CHARACTER SET utf8 COLLATE utf8_general_ci")
-            ->execute();
-        $this->getConnection()->createCommand("ALTER TABLE " . ProductAttribute::tableName() . " CHARACTER SET utf8 COLLATE utf8_general_ci")
-            ->execute();
-
-        $product = Product::find()->where(['sku' => 'ARTi01'])->with('productAttributes')->one(); // join for ARTi01
-        $this->assertCount(3, $product->productAttributes);
-
+        
+        $products = Product::find()->indexBy('sku')->with('productAttributes')->all();
+        $this->assertCount(1, $product['ARTi01']->productAttributes);
+        $this->assertCount(0, $product['ARTI01']->productAttributes);
     }
 
     public function testFindEagerViaTable()
